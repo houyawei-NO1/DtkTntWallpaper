@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     a.loadTranslator(); //加载翻译
     a.setAttribute(Qt::AA_UseHighDpiPixmaps);
     a.setOrganizationName("deepin"); //设置组织名称
-    a.setApplicationVersion(DApplication::buildVersion("1.0"));//设置程序版本
+    a.setApplicationVersion(DApplication::buildVersion("0.1"));//设置程序版本
     a.setProductIcon(QIcon::fromTheme("deepin-launcher"));  //设置程序Logo
     a.setProductName("DtkDemo"); //设置项目名称
     a.setApplicationDescription("Programs developed using DTK");//设置程序介绍

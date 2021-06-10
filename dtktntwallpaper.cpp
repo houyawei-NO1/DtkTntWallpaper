@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QMenu>
 #include <QAction>
+#include <DFloatingButton>
+#include <DPushButton>
 
 DtkTntWallpaper::DtkTntWallpaper(DMainWindow *parent)
     : DMainWindow(parent)
@@ -12,19 +14,39 @@ DtkTntWallpaper::DtkTntWallpaper(DMainWindow *parent)
     //初始化主窗口 Initialize the main window
        setCentralWidget(w);//将w作为窗口的用户部分（整个窗口除了标题栏的部分）
        moveToCenter(this); //把窗口移动到屏幕中间
-       DtkTntWallpaper::resize(630,500); //改变窗口大小应当改变MainWindow的大小
 
-       //下面是创建控件的实例 The following is an example of creating a control
-       DLabel *label=new DLabel;
-       label->setParent(w);
-       label->setText("Hello World");
-       label->show();
+       DLabel *pic_label=new DLabel;
+       pic_label->setText("Hello World");
+       QImage *pic = new QImage;
+       pic->load(":/wallpaper/wallpaper/1.jpg");
+       QPixmap p1 = QPixmap::fromImage(*pic);
+       QSize s1 = p1.size();
+       QSize s2(s1.width() * 0.5, s1.height() * 0.5);
+       DtkTntWallpaper::setMinimumSize(s2);
+       DtkTntWallpaper::setMaximumSize(s2);
+       pic_label->setPixmap(p1.scaled(s2, Qt::KeepAspectRatio));
 
-       //在标题栏添加控件（其实可以把标题栏看成一个Widget,详细的说明请看文档) Add a control to the title bar (In fact, the title bar can be regarded as a Widget. Please refer to the document for detailed instructions.)
-       DSearchEdit *searchEdit = new DSearchEdit;
-       titlebar()->setCustomWidget(searchEdit);
-       searchEdit->setFixedWidth(200);
-       searchEdit->show();
+       QVBoxLayout *backlayout = new QVBoxLayout(w);
+       backlayout->setMargin(0);
+       backlayout->addWidget(pic_label);
+
+       DFloatingButton *up_page = new DFloatingButton(DStyle::SP_ArrowLeft, this);
+       DFloatingButton *down_page = new DFloatingButton(DStyle::SP_ArrowRight, this);
+       DPushButton *ok_set = new DPushButton("设置壁纸");
+//       ok_set->setStyleSheet("background-color:blue;color:white");
+       QVBoxLayout *frontlayout = new QVBoxLayout(pic_label);
+       QHBoxLayout *upview = new QHBoxLayout;
+       QHBoxLayout *downview = new QHBoxLayout;
+       frontlayout->addStretch(1);
+       frontlayout->addLayout(upview);
+       upview->addWidget(up_page);
+       upview->addStretch(1);
+       upview->addWidget(down_page);
+       frontlayout->addStretch(1);
+       frontlayout->addLayout(downview);
+       downview->addStretch(70);
+       downview->addWidget(ok_set,Qt::AlignBottom);
+       downview->addStretch(70);
 
        //在标题栏上添加一个菜单/菜单项 Add a menu/menu item to the title bar
        QMenu *menu=new QMenu;
